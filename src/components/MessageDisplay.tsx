@@ -1,19 +1,17 @@
-
 import React, { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
+import abi from '../abi.json'
+import { contractAddress } from '../contractAddress';
 
 const MessageDisplay: React.FC = () => {
     const [savedMessage, setSavedMessage] = useState('');
-    const contractAddress = 'YOUR_CONTRACT_ADDRESS'; 
-
     useEffect(() => {
         const fetchMessage = async () => {
             if (typeof window.ethereum !== 'undefined') {
                 const provider = new ethers.BrowserProvider(window.ethereum);
-                const contract = new ethers.Contract(contractAddress, ['function getMessage()'], provider);
-
+                const contract = new ethers.Contract(contractAddress, abi, provider);
                 try {
-                    const message = await contract.getMessage();
+                     const message = await contract.getMessage() ;
                     setSavedMessage(message);
                 } catch (error) {
                     console.error('Error fetching message:', error);
